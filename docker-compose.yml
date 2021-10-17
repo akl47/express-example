@@ -1,0 +1,51 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./backend
+    environment: 
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_SCHEMA: ${DB_SCHEMA}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_LOGGING: ${DB_LOGGING}
+      PORT: ${BACKEND_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+    volumes:
+      - ./backend:/usr/src/
+      - ./backend/node_modules:/usr/src/node_modules # Remove this if you have pure JS dependencies
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+    depends_on: 
+      - postgres
+    container_name: backend
+  postgres:
+    container_name: postgres
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment: 
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5433:5432'
+    
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    logging:
+      driver: "none"
+volumes:
+  postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
