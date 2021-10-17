@@ -11,7 +11,7 @@ let sequelize = new Sequelize({
   database: process.env.DB_NAME,
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
-  dialect: "postgres",
+  dialect: process.env.DB_DIALECT,
   logging: process.env.DB_LOGGING
 });
 
