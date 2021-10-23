@@ -14,7 +14,7 @@ app.use(cors());
  
 app.use((req,res,next) => {
 	console.log(req.url);
-next();
+  next();
 });
 console.log('pre bp')
 // BODY PARSER
